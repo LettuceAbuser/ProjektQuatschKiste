@@ -88,7 +88,7 @@ const startScraper = async () => {
             } catch (err) {
                 console.error("Fehler beim Lesen der Bossdaten:", err);
             }
-        }, 2000);
+        }, 1000);
     } catch (err) {
         console.error("Fehler beim Starten des Scrapers:", err);
         console.log("Neustart in 10 Sekunden...");
