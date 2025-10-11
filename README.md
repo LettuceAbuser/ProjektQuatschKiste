@@ -8,6 +8,9 @@
   * DOM-Manipulation
 - League of Legends Champion Randomizer (mit Lane auswahl)
 - Diablo IV Worldboss tracker (zeigt an, wann und welcher Worldboss als nächstes spawnt)
-- 
+- * Benutzte Techniken :
+  * Website Scraping
+  * DOM Manipulation
+
 
 
