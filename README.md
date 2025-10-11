@@ -3,6 +3,11 @@
 
 ## Zu finden sind hier am Ende 3 kleine Apps
 - What are the odds Simulator (bringe deine Freunde dazu, sachen zu tun, die sie garnicht wollen)
+- * Benutzte Techniken :
+  * Ajax Laden von Daten von Lokaler Datenbank(CouchDB)
+  * DOM-Manipulation
 - League of Legends Champion Randomizer (mit Lane auswahl)
 - Diablo IV Worldboss tracker (zeigt an, wann und welcher Worldboss als nächstes spawnt)
+- 
+
 
