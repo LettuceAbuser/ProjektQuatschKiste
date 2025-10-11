@@ -1,7 +1,8 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/game">Wie hoch?!</router-link>
+    <router-link to="/game">Wie hoch?!</router-link> |
+    <router-link to="/tracker">Diablo IV Tracker</router-link>
   </nav>
   <router-view/>
 </template>
@@ -12,11 +13,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #5adc2f;
+  color: #41cb14;
 }
 
 body {
-  background-color: #383838;
+  background-color: #313131;
+
 }
 
 nav {
@@ -25,7 +27,7 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #5adc2f;
+  color: #41cb14;
 }
 
 nav a.router-link-exact-active {

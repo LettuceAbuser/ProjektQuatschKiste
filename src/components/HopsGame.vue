@@ -3,9 +3,9 @@
     <h1>Sag doch wie hoch?!</h1>
 
     <div class="inputs">
-      <input v-model="gamename" type="text" placeholder="Wer nimmt hops?" />
-      <input v-model="name" type="text" placeholder="Wer wird hops genommen?" />
-      <input v-model.number="chance" type="number" placeholder="Wie hoch" />
+      <input v-model="gamename" type="text" placeholder="Wer nimmt hops?"/>
+      <input v-model="name" type="text" placeholder="Wer wird hops genommen?"/>
+      <input v-model.number="chance" type="number" placeholder="Wie hoch"/>
     </div>
 
     <button @click="rollDice"
@@ -31,10 +31,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import {ref, onMounted} from "vue";
 import axios from "axios";
 
-// --- State --- DAS KOMMT VON DER KI, ist wohl nötig um die Würfel zu animieren schätze ähnlich wie querySelector
+// --- State --- DAS KOMMT VON DER KI, erzeugt reaktive container die bei änderung automatisch DOM aktualisieren
 const gamename = ref("");
 const name = ref("");
 const chance = ref(null);
@@ -45,13 +45,13 @@ const numberA = ref(null);
 const numberB = ref(null);
 const showDice = ref(false);
 
-// --- Funktionen ---
+// Schummel prävention
 const rollDice = async () => {
   if (!chance.value || chance.value < 2) {
     alert("Bitte eine Zahl größer als 1 eingeben!");
     return;
   }
-// kommt von KI --> sorgt dafür das sich der Text im Button je nach Zustand ändern kann (Zeile 13 Template)
+// KOMMT VON KI --> sorgt dafür das sich der Text im Button je nach Zustand ändern kann (Zeile 13 Template)
   showDice.value = true;
   rolling.value = true;
 
@@ -81,18 +81,18 @@ const rollDice = async () => {
       };
 
       await saveToServer(entry);
-      history.value.unshift(entry);
+      history.value.push(entry);
     } else {
       resultText.value = "Schwein gehabt!";
     }
 
-    // Eingaben zurücksetzen
+    // Eingabefelder leeren
     gamename.value = "";
     name.value = "";
   }, 1500);
 };
 
-// --- Daten speichern ---
+// Route für speichern in CouchDB
 const saveToServer = async (entry) => {
   try {
     await axios.post("http://localhost:8000/save", entry);
@@ -101,23 +101,24 @@ const saveToServer = async (entry) => {
   }
 };
 
-// --- History laden ---
+// Hopshistory von CouchDB laden und in Array (history) hinzufügen
 const loadHistory = async () => {
   try {
     const res = await axios.get("http://localhost:8000/history");
     history.value = res.data;
+    console.log(res.data);
   } catch (err) {
     console.error("Fehler beim Laden der History:", err);
   }
 };
 
-// --- Zeitstempel formatieren ---
+// Deutsche Datumsformat
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
-  return date.toLocaleString();
+  return date.toLocaleString("DE");
 };
 
-// --- Beim Laden direkt History abrufen ---
+// Beim Laden direket Hopshistory aufrufen
 onMounted(loadHistory);
 </script>
 
@@ -129,7 +130,7 @@ onMounted(loadHistory);
   background: #181818;
   color: #fff;
   border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(45, 75, 35, 0.24);
   text-align: center;
   font-family: "Inter", sans-serif;
 }
@@ -188,15 +189,6 @@ button:disabled {
   color: #5adc2f;
   border-radius: 10px;
   box-shadow: 0 0 10px #444;
-  animation: roll 0.1s 20 ease;
-}
-
-@keyframes roll {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  50% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
-  100% { transform: rotate(0deg); }
 }
 
 .result {

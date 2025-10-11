@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import GameView from '../views/WieHoch.vue'
+import DiabloTimerView from "@/views/DiabloTimerView.vue";
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
         name: 'game',
         component: GameView
     },
+    {
+        path: '/tracker',
+        name: 'tracker',
+        component: DiabloTimerView
+    }
 ]
 
 const router = createRouter({

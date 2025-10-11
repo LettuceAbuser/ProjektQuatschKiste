@@ -1,29 +1,35 @@
 import express from "express";
 import cors from "cors";
 import nano from "nano";
-import login from './couchlog.json' with {type: "json"};
+import login from "./couchlog.json" with { type: "json" };
+import puppeteer from "puppeteer";
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:8080" })); // Vue Dev Server erlaubt
+app.use(cors({ origin: "http://localhost:8080" }));
 
+// --- CouchDB Setup ---
 const couchURL = `http://${login.dbUser}:${login.dbPass}@127.0.0.1:5984`;
 const nanoInstance = nano(couchURL);
 const dbName = "hopshistory";
+let db;
 
-    let db;
-
-async function initDB() {
-    const dbList = await nanoInstance.db.list();
-    if (!dbList.includes(dbName)) {
-        await nanoInstance.db.create(dbName);
-        console.log(`DB '${dbName}' erstellt`);
+const initDB = async () => {
+    try {
+        const dbList = await nanoInstance.db.list();
+        if (!dbList.includes(dbName)) {
+            await nanoInstance.db.create(dbName);
+            console.log(`DB '${dbName}' erstellt`);
+        }
+        db = nanoInstance.use(dbName);
+        console.log(`DB '${dbName}' verbunden`);
+    } catch (err) {
+        console.error("Fehler bei DB-Initialisierung:", err);
     }
-    db = nanoInstance.use(dbName);
-    console.log(`DB '${dbName}' verbunden`);
-}
-initDB().catch(err => console.error(err));
+};
+initDB();
 
+// --- CouchDB Routes ---
 app.post("/save", async (req, res) => {
     try {
         const { gamename, name, chance } = req.body;
@@ -31,7 +37,7 @@ app.post("/save", async (req, res) => {
         await db.insert({ gamename, name, chance, timestamp: Date.now() });
         res.sendStatus(201);
     } catch (err) {
-        console.error(err);
+        console.error("Fehler beim Speichern:", err);
         res.sendStatus(500);
     }
 });
@@ -47,4 +53,53 @@ app.get("/history", async (req, res) => {
     }
 });
 
-app.listen(8000, () => console.log("Server läuft auf http://localhost:8000"));
+// --- Diablo World Boss Tracker ---
+let bossTimers = [];
+let page;
+
+const startScraper = async () => {
+    try {
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        });
+
+        page = await browser.newPage();
+        await page.goto("https://d4planner.io/trackers/world-bosses", {
+            waitUntil: "networkidle2",
+            timeout: 60000,
+        });
+
+        await page.waitForSelector(".EventTrackers_bossCard__ZwgRz");
+        console.log("Scraper gestartet – World Boss Seite geladen.");
+
+        // Alle 2 Sekunden Timer auslesen
+        setInterval(async () => {
+            try {
+                bossTimers = await page.evaluate(() => {
+                    return Array.from(
+                        document.querySelectorAll(".EventTrackers_bossCard__ZwgRz")
+                    ).map(card => {
+                        const name = card.querySelector("h3")?.textContent.trim() || "Unknown";
+                        const timer = card.querySelector("strong")?.textContent.trim() || "-";
+                        return { name, timer };
+                    });
+                });
+            } catch (err) {
+                console.error("Fehler beim Lesen der Bossdaten:", err);
+            }
+        }, 2000);
+    } catch (err) {
+        console.error("Fehler beim Starten des Scrapers:", err);
+        console.log("Neustart in 10 Sekunden...");
+        setTimeout(startScraper, 10000);
+    }
+};
+startScraper();
+
+// API Route
+app.get("/worldboss", (req, res) => res.json(bossTimers));
+
+// --- Server Start ---
+const PORT = 8000;
+app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));
