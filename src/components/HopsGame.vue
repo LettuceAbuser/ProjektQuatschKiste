@@ -34,7 +34,8 @@
 import {ref, onMounted} from "vue";
 import axios from "axios";
 
-// --- State --- DAS KOMMT VON DER KI, erzeugt reaktive container die bei änderung automatisch DOM aktualisieren
+// --- State --- DAS KOMMT VON DER KI, erzeugt reaktive Objekte die automatisch auf änderungen reagieren und daraufhin sich selber und den DOM aktualiseren
+// man kann es sich auch ein bisschen wie querySelector vorstellen ... mesig
 const gamename = ref("");
 const name = ref("");
 const chance = ref(null);
@@ -61,7 +62,6 @@ const rollDice = async () => {
     numberB.value = Math.floor(Math.random() * chance.value) + 1;
   }, 100);
 
-  // Nach 1,5 Sekunden stoppen
   setTimeout(async () => {
     clearInterval(interval);
     numberA.value = Math.floor(Math.random() * chance.value) + 1;
@@ -74,8 +74,8 @@ const rollDice = async () => {
       resultText.value = `${name.value.toUpperCase()} wurde von ${gamename.value.toUpperCase()} hops genommen! (${chance.value}er Wahrscheinlichkeit)`;
 
       const entry = {
-        gamename: gamename.value,
-        name: name.value,
+        gamename: gamename.value.toUpperCase(),
+        name: name.value.toUpperCase(),
         chance: chance.value,
         timestamp: Date.now(),
       };
@@ -86,10 +86,9 @@ const rollDice = async () => {
       resultText.value = "Schwein gehabt!";
     }
 
-    // Eingabefelder leeren
     gamename.value = "";
     name.value = "";
-  }, 1500);
+  }, 2500);
 };
 
 // Route für speichern in CouchDB
@@ -118,7 +117,6 @@ const formatDate = (timestamp) => {
   return date.toLocaleString("DE");
 };
 
-// Beim Laden direket Hopshistory aufrufen
 onMounted(loadHistory);
 </script>
 
@@ -132,7 +130,6 @@ onMounted(loadHistory);
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(45, 75, 35, 0.24);
   text-align: center;
-  font-family: "Inter", sans-serif;
 }
 
 .inputs {

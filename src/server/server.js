@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:8080" }));
 
-// --- CouchDB Setup ---
+// CouchDB
 const couchURL = `http://${login.dbUser}:${login.dbPass}@127.0.0.1:5984`;
 const nanoInstance = nano(couchURL);
 const dbName = "hopshistory";
@@ -29,7 +29,8 @@ const initDB = async () => {
 };
 initDB();
 
-// --- CouchDB Routes ---
+// Hopsname speichern
+
 app.post("/save", async (req, res) => {
     try {
         const { gamename, name, chance } = req.body;
@@ -42,6 +43,8 @@ app.post("/save", async (req, res) => {
     }
 });
 
+// Hopsnamen abrufen
+
 app.get("/history", async (req, res) => {
     try {
         const body = await db.list({ include_docs: true });
@@ -53,7 +56,8 @@ app.get("/history", async (req, res) => {
     }
 });
 
-// --- Diablo World Boss Tracker ---
+// Website Scraper
+
 let bossTimers = [];
 let page;
 
@@ -73,7 +77,7 @@ const startScraper = async () => {
         await page.waitForSelector(".EventTrackers_bossCard__ZwgRz");
         console.log("Scraper gestartet – World Boss Seite geladen.");
 
-        // Alle 2 Sekunden Timer auslesen
+        // Timer jede Sekunde neu lesen
         setInterval(async () => {
             try {
                 bossTimers = await page.evaluate(() => {
@@ -97,9 +101,9 @@ const startScraper = async () => {
 };
 startScraper();
 
-// API Route
+// Scraper Route
+
 app.get("/worldboss", (req, res) => res.json(bossTimers));
 
-// --- Server Start ---
 const PORT = 8000;
 app.listen(PORT, () => console.log(`Server läuft auf http://localhost:${PORT}`));

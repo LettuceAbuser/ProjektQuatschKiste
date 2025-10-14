@@ -14,8 +14,10 @@
         <h3 class="boss-name">{{ boss.name }}</h3>
         <p>Nächster Spawn in:</p>
         <strong class="boss-timer">{{ boss.timer }}</strong>
+
       </div>
     </div>
+    <iframe width="1000" height="1000" src="https://d4planner.io/map"></iframe>
   </div>
 </template>
 
