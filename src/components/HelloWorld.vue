@@ -4,9 +4,22 @@
   <p>aber die Technik dahinter ist schon verdammt cool man !</p>
   <div class="container">
     <h2>3 Komponenten</h2>
-    <p>3 Komponenten, sortiert nach aufsteigender komplexität. <br> Die erste Komponenete benutzt ein eigenes Backend <strong>(server: Express)</strong>,
-      welches Daten einer Datenbank <strong>(CouchDB)</strong> abrufen und speichern <strong>(cors)</strong> kann. Ausserdem eine simple Logik <script>(JavaScript)</script>,
+    <p>3 Komponenten, sortiert nach aufsteigender komplexität.
+      <br> <br>
+      Die erste Komponenete benutzt ein eigenes Backend <strong>(server: Express)</strong>,
+      welches Daten einer Datenbank <strong>(CouchDB)</strong> abrufen und speichern <strong>(cors)</strong> kann. Ausserdem eine simple Logik <strong>(JavaScript)</strong>,
       die 2 zufällige Zahlen erzeugt und diese gegeneinander prüft. Das ganze wird dann noch ein bisschen animiert <strong>(JavaScript)</strong>, damits etwas spannender ist.
+      <br> <br>
+      Die zweite Komponente benutzt eine Technik namens "Scraping" <strong>(Puppeteer)</strong> und läuft ebenfalls über den eigenen backend Server <strong>(Express)</strong>.
+      Dabei wird eine bereits exisitierende Website (<a href="https://d4planner.io/trackers/world-bosses"> https://d4planner.io/trackers/world-bosses</a>)
+      geladen und diese anhand von mehreren HTML Attributen "gefiltert". Man kann dann anhand dieser gefilterten Attribute die Daten der jeweiligen Objekte auslesen und
+      damit weiter arbeiten. In diesem Beispiel wird die filterung jede Sekunde aktualisiert <strong>(JavaScript)</strong>.
+      Darunter befindet sich noch eine Interaktive Karte von Diablo, diese ist von der gleichen Seite einfach über ein iFrame <strong>(HTML)</strong> geklaut hehe.
+      <br> <br>
+      Die dritte Komponente ruft eine bereits vorhandene Datenbank auf (<a href="https://ddragon.leagueoflegends.com/cdn/14.18.1/data/en_US/champion.json">DDragon</a>)
+      die im gegensatz zu komponente 1 eine komplexe JSON datei liefert. Diesen Daten werden dann per filterlogik <strong>(JavaScript)</strong> aufgeteilt in Lanes.
+      Beim auswählen der Lanes wird also die Liste iteriert und geprüft ob jeder Champion die zur Lane passenden Klasse hat. Durch diese Liste kann man dann wider per Button
+      Iterieren, das wird wieder mit einer kleinen Animation <strong>(JavaScript)</strong> verschönert.
     </p>
   </div>
   <div class="container">
