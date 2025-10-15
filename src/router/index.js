@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import GameView from '../views/WieHoch.vue'
+import HomeView from '../views/HomeView.vue';
+import GameView from '../views/WieHoch.vue';
 import DiabloTimerView from "@/views/DiabloTimerView.vue";
+import LeagueRoll from '../views/LeagueView.vue';
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
         path: '/tracker',
         name: 'tracker',
         component: DiabloTimerView
+    },
+    {
+        path: '/league',
+        name: 'league',
+        component: LeagueRoll
     }
 ]
 

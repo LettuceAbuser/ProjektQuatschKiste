@@ -2,7 +2,8 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/game">Wie hoch?!</router-link> |
-    <router-link to="/tracker">Diablo IV Tracker</router-link>
+    <router-link to="/tracker">Diablo IV Tracker</router-link> |
+    <router-link to="/league">Champion Spinner</router-link>
   </nav>
   <router-view/>
 </template>

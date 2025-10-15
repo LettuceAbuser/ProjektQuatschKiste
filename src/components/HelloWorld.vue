@@ -1,7 +1,14 @@
 <template>
-  <h1>Wilkommen in der Quatschkiste !</h1>
+  <h1>Wilkommen in der Quatschkiste!</h1>
   <p>Hier findest du allerhand Schwachsinn, der zwar nicht wirklich viel nützt...</p>
   <p>aber die Technik dahinter ist schon verdammt cool man !</p>
+  <div class="container">
+    <h2>3 Komponenten</h2>
+    <p>3 Komponenten, sortiert nach aufsteigender komplexität. <br> Die erste Komponenete benutzt ein eigenes Backend <strong>(server: Express)</strong>,
+      welches Daten einer Datenbank <strong>(CouchDB)</strong> abrufen und speichern <strong>(cors)</strong> kann. Ausserdem eine simple Logik <script>(JavaScript)</script>,
+      die 2 zufällige Zahlen erzeugt und diese gegeneinander prüft. Das ganze wird dann noch ein bisschen animiert <strong>(JavaScript)</strong>, damits etwas spannender ist.
+    </p>
+  </div>
   <div class="container">
   <h3>Erklärung: Wie hoch?!</h3>
   <p><strong>Spielprinzip:</strong> Stell dir vor du bist in der Kneipe. Wie immer hörst du vom Tresen diesen einen Dulli der fester von sich überzeugt ist als jeder andere...
@@ -16,13 +23,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+<script setup>
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
