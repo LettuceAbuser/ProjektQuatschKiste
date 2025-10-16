@@ -46,7 +46,6 @@ const numberA = ref(null);
 const numberB = ref(null);
 const showDice = ref(false);
 
-// Schummel prävention
 const rollDice = async () => {
   if (!chance.value || chance.value < 2) {
     alert("Bitte eine Zahl größer als 1 eingeben!");
@@ -91,7 +90,6 @@ const rollDice = async () => {
   }, 2500);
 };
 
-// Route für speichern in CouchDB
 const saveToServer = async (entry) => {
   try {
     await axios.post("http://localhost:8000/save", entry);
@@ -100,7 +98,6 @@ const saveToServer = async (entry) => {
   }
 };
 
-// Hopshistory von CouchDB laden und in Array (history) hinzufügen
 const loadHistory = async () => {
   try {
     const res = await axios.get("http://localhost:8000/history");

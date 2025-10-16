@@ -16,9 +16,9 @@
 
       <div class="list-wrapper">
         <div
-            v-for="(champ, idx) in championsForLane"
+            v-for="(champ, id) in championsForLane"
             :key="champ.id"
-            :class="['champ-card', { active: idx === currentIndex, chosen: idx === finalIndex && stopped }]"
+            :class="['champ-card', { active: id === currentIndex, chosen: id === finalIndex && stopped }]"
             :style="{ backgroundImage: `url(${champ.icon})` }"
         >
           <span class="champ-name">{{ champ.name }}</span>
@@ -43,12 +43,12 @@ const stopped = ref(false);
 
 let spinTimeout = null;
 
-const championsForLane = computed(() => champions.value[selectedLane.value] || []);
+const championsForLane = computed(() => champions.value[selectedLane.value]);
 
 const VERSION = "15.17.1";
 const BASE_URL = `https://ddragon.leagueoflegends.com/cdn/${VERSION}/`;
 
-// Lane-Filter (basierend auf Champion-Tags)
+// Filter --> in der onMounted wird jeder Champion anhand dieser "Tags" in die entsprechenden Arrays gepusht
 const laneMap = {
   Top: ["Fighter", "Tank"],
   Jungle: ["Jungle", "Assassin", "Fighter"],
@@ -56,6 +56,8 @@ const laneMap = {
   ADC: ["Marksman"],
   Support: ["Support"]
 };
+
+//Bei der onMounted function habe ich mir von KI helfen lassen (Zeile 73-80 for schleife)
 
 onMounted(async () => {
   try {
@@ -73,7 +75,6 @@ onMounted(async () => {
           laneGroups[lane].push({
             id: c.id,
             name: c.name,
-            title: c.title,
             icon,
           });
         }
@@ -89,8 +90,6 @@ onMounted(async () => {
 });
 
 const startSpin = () => {
-  if (rolling.value || championsForLane.value.length === 0) return;
-
   rolling.value = true;
   stopped.value = false;
   finalIndex.value = -1;

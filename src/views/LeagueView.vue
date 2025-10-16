@@ -1,5 +1,4 @@
 <template>
-  <h1>League Randomizer</h1>
   <LoLRoller/>
 </template>
 

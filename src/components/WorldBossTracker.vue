@@ -38,7 +38,6 @@ const fetchBosses = async () => {
 
 
 onMounted(() => {
-  // Daten abrufen und live aktualisieren
   fetchBosses();
   setInterval(fetchBosses, 1000);
 });
